@@ -1,3 +1,4 @@
+import "./style.css";
 import { PRODUCT_NAME, PITCH } from "./config.js";
 
 const app = document.querySelector("#app");
