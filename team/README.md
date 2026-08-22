@@ -17,5 +17,5 @@ Fun fact: interviewed 6 users on a ferry once. On purpose.
 ## theo lindqvist — Design
 Fun fact: owns 41 identical black notebooks.
 
-## Tyler — Software Engineer I
+## Tyler Brooks — Software Engineer I
 Fun fact: has a 400-day streak on a daily music app and has never once listened to the song it picked.
