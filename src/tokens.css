@@ -1,0 +1,27 @@
+/* Design tokens — theo's handoff, sprint 2.
+   "Measurements are law, colors are tokens." Everything below is either an
+   8pt step or a named color; nothing in a component should hardcode either. */
+:root {
+  /* 8pt grid. Nothing between steps — if a gap needs 12px it needs a reason. */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+
+  /* One accent. The card gets its hierarchy from whitespace, not from colour. */
+  --ink: #f4f1ea;
+  --ink-quiet: rgba(244, 241, 234, 0.62);
+  --surface: #0f1115;
+  --surface-raised: #161a21;
+  --accent: #7fd1ae;
+  --hairline: rgba(244, 241, 234, 0.12);
+
+  /* Type scale — three sizes on the card, no more. */
+  --type-kicker: 0.75rem;
+  --type-body: 1rem;
+  --type-title: clamp(2rem, 9vw, 3rem);
+
+  --radius: 16px;
+}

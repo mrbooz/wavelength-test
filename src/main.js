@@ -1,4 +1,6 @@
 import "./style.css";
+import "./tokens.css";
+import { createMorningCard } from "./morning-card.js";
 import { PRODUCT_NAME, PITCH } from "./config.js";
 import { songForToday } from "./songs.js";
 import { track } from "./analytics.js";
@@ -23,11 +25,11 @@ spinBtn.addEventListener("click", () => {
 
   // Render the result FIRST — the event fires when the result is on screen,
   // not on page load and not on the click itself (acceptance criteria, TMP-5).
-  reveal.innerHTML = `
-    <p class="kicker">Your song today</p>
-    <p class="song-title">${song.title}</p>
-    <p class="song-artist">${song.artist}</p>
-  `;
+  // TMP-7: the reveal is theo's morning card now. Still fed from the local
+  // catalogue — wiring it to real data is TMP-8.
+  reveal.replaceChildren(
+    createMorningCard({ title: song.title, artist: song.artist, kicker: "Your song today" }),
+  );
   reveal.hidden = false;
   spinBtn.textContent = "That's your spin for today";
   spinBtn.disabled = true;
