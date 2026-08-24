@@ -29,3 +29,31 @@ h1 {
   font-size: 1.25rem;
   opacity: 0.85;
 }
+
+.spin {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  background: #1d3d32;
+  color: #f6f2e8;
+  cursor: pointer;
+}
+.spin:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.reveal {
+  margin-top: 2rem;
+}
+.song-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}
+.song-artist {
+  margin: 0.25rem 0 0;
+  opacity: 0.75;
+}
