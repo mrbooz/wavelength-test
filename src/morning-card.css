@@ -1,0 +1,46 @@
+/* The one-song morning card — TMP-7 (component + layout only).
+   Data wiring is TMP-8; loading/error/empty are TMP-9. This file draws the
+   populated state and nothing else, on purpose. */
+.morning-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 360px;          /* phone-first: the redlined frames are 360 wide */
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+/* Whitespace does the hierarchy: kicker sits close to the title it labels,
+   the artist sits close to the title it belongs to, and the footer is pushed
+   away from both. Frame 3's redlines are 8 / 24 / 48. */
+.morning-card__kicker {
+  margin: 0 0 var(--space-1);
+  font-size: var(--type-kicker);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.morning-card__title {
+  margin: 0;
+  font-size: var(--type-title);
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--ink);
+}
+.morning-card__artist {
+  margin: var(--space-1) 0 0;
+  font-size: var(--type-body);
+  color: var(--ink-quiet);
+}
+.morning-card__footer {
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--hairline);
+  font-size: var(--type-kicker);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+}
