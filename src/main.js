@@ -28,7 +28,7 @@ spinBtn.addEventListener("click", () => {
   // TMP-7: the reveal is theo's morning card now. Still fed from the local
   // catalogue — wiring it to real data is TMP-8.
   reveal.replaceChildren(
-    createMorningCard({ title: song.title, artist: song.artist, footer: "Your song today" }),
+    createMorningCard({ title: song.title, artist: song.artist, kicker: "Your song today" }),
   );
   reveal.hidden = false;
   spinBtn.textContent = "That's your spin for today";

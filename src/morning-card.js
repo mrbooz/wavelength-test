@@ -11,7 +11,12 @@ import "./morning-card.css";
  * Returns an element rather than a string so the caller decides where it goes
  * and nothing has to trust innerHTML with a song title someone else typed.
  */
-export function createMorningCard({ title, artist, footer = "Today's spin" }) {
+export function createMorningCard({
+  title,
+  artist,
+  kicker = "Today's spin",
+  footnote = "One song. Every morning.",
+}) {
   if (!title || !artist) {
     throw new Error("createMorningCard: title and artist are required (empty state is TMP-9)");
   }
@@ -19,9 +24,9 @@ export function createMorningCard({ title, artist, footer = "Today's spin" }) {
   const card = document.createElement("article");
   card.className = "morning-card";
 
-  const kicker = document.createElement("p");
-  kicker.className = "morning-card__kicker";
-  kicker.textContent = footer;
+  const kickerEl = document.createElement("p");
+  kickerEl.className = "morning-card__kicker";
+  kickerEl.textContent = kicker;
 
   const heading = document.createElement("h1");
   heading.className = "morning-card__title";
@@ -33,8 +38,8 @@ export function createMorningCard({ title, artist, footer = "Today's spin" }) {
 
   const foot = document.createElement("p");
   foot.className = "morning-card__footer";
-  foot.textContent = "One song. Every morning.";
+  foot.textContent = footnote;
 
-  card.append(kicker, heading, by, foot);
+  card.append(kickerEl, heading, by, foot);
   return card;
 }
