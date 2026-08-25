@@ -10,9 +10,22 @@ export const SONGS = [
   { title: "Tek It", artist: "Cafuné" },
 ];
 
-// Deterministic pick: same calendar day -> same song for everyone.
+/** The day key for a date, in the READER'S calendar rather than UTC.
+ *
+ *  toISOString() is UTC, so "today's song" rolled over at UTC midnight —
+ *  5pm in California. On a product whose whole shape is a MORNING card,
+ *  the song changed in the middle of the reader's afternoon and the card
+ *  then named a day they were not in yet. Local date, local day. */
+export function dayKeyFor(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+// Deterministic pick: same calendar day -> same song for everyone in that day.
 export function songForToday(date = new Date()) {
-  const dayKey = date.toISOString().slice(0, 10);
+  const dayKey = dayKeyFor(date);
   let h = 0;
   for (const c of dayKey) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   return { ...SONGS[h % SONGS.length], dayKey };
