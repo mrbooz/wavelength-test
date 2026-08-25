@@ -58,9 +58,30 @@ function formatDay(dayKey) {
 // analytics once-guard would swallow the duplicate anyway, but relying on a
 // dedupe to keep a number honest is how the number stops meaning what its
 // name says (Ben's device-day-not-human-day caveat, sprint review 1).
-const today = songForToday();
-const recorded = readSpin(today.dayKey);
-if (recorded) showSpin(recorded);
+/** Restore whatever is on record for the CURRENT day, or offer a spin.
+ *
+ * Recomputed rather than captured: a tab left open across midnight used to
+ * keep yesterday's card on screen with the button still disabled, so the
+ * reader was locked out of a day they had not spun. Re-checked whenever the
+ * tab comes back to the front, which is exactly when someone returns to a
+ * page they left open overnight. */
+function refresh() {
+  const recorded = readSpin(songForToday().dayKey);
+  if (recorded) {
+    showSpin(recorded);
+    return;
+  }
+  reveal.hidden = true;
+  reveal.replaceChildren();
+  spinBtn.disabled = false;
+  spinBtn.textContent = "Play today's spin";
+}
+
+refresh();
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") refresh();
+});
+window.addEventListener("focus", refresh);
 
 spinBtn.addEventListener("click", () => {
   const song = songForToday();
