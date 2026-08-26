@@ -99,6 +99,7 @@ window.addEventListener("focus", refresh);
  *  for: a fast load never shows a skeleton at all. */
 async function spin() {
   spinBtn.disabled = true;
+  spinBtn.textContent = "Spinning…";
   reveal.replaceChildren(loadingCard());
   reveal.hidden = false;
   try {
@@ -114,8 +115,13 @@ async function spin() {
     // (result-state contract, flagged to Nadia at the pivot).
     track("core_action_completed", { song: song.title, day: song.dayKey }, { once: `reveal:${song.dayKey}` });
   } catch {
+    // The label is set here, not assumed: before this, "Play today's spin"
+    // was an invariant of the path taken rather than a fact of the state,
+    // and any new caller could have broken it silently. Each state now
+    // writes its own label.
     reveal.replaceChildren(errorCard(() => void spin()));
     spinBtn.disabled = false;
+    spinBtn.textContent = "Play today's spin";
   }
 }
 
