@@ -114,7 +114,11 @@ async function spin() {
     // error and empty fire NOTHING — the metric counts finished spins only
     // (result-state contract, flagged to Nadia at the pivot).
     track("core_action_completed", { song: song.title, day: song.dayKey }, { once: `reveal:${song.dayKey}` });
-  } catch {
+  } catch (err) {
+    // The failure is kept, not discarded — the console is the app's log
+    // today (TMP-5's honest-log rule), and an error state you cannot
+    // diagnose is a dead end with better typography.
+    console.error("[spin] load failed", err);
     // The label is set here, not assumed: before this, "Play today's spin"
     // was an invariant of the path taken rather than a fact of the state,
     // and any new caller could have broken it silently. Each state now
