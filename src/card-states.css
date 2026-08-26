@@ -1,0 +1,50 @@
+/* TMP-9 — the three non-populated states of the morning card.
+   Same surface, same grid, same single accent as morning-card.css.
+   Loading: skeleton shapes, 300ms fade, no spinners (theo's spec).
+   Error: plain words, one retry, no dead ends.
+   Empty: first-run, zero data — the state everyone meets first. */
+
+/* Loading — grey shapes where the words will be. The fade-in is DELAYED by
+   300ms: a fast load never shows a skeleton at all, which is also the fix for
+   the loading-vs-empty flash flagged in sprint planning. */
+.card-state--loading .skel {
+  background: var(--hairline);
+  border-radius: 6px;
+  animation: skel-in 1ms linear;
+  animation-delay: 300ms;
+  animation-fill-mode: both;
+}
+@keyframes skel-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.skel--kicker { width: 96px; height: 12px; margin-bottom: var(--space-1); }
+.skel--title { width: 75%; height: 40px; }
+.skel--artist { width: 40%; height: 16px; margin-top: var(--space-1); }
+
+/* Error — words, not chrome. */
+.card-state--error .state-words { color: var(--ink); margin: 0; }
+.card-state--error .state-quiet { color: var(--ink-quiet); margin: var(--space-1) 0 0; }
+.retry {
+  margin-top: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  font: inherit;
+  font-weight: 600;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Empty — first-run. The accent goes here: this is the one state that has to
+   sell the product to someone with zero history. */
+.card-state--empty .state-kicker {
+  margin: 0 0 var(--space-1);
+  font-size: var(--type-kicker);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.card-state--empty .state-words { color: var(--ink); margin: 0; font-size: 1.25rem; font-weight: 600; }
+.card-state--empty .state-quiet { color: var(--ink-quiet); margin: var(--space-1) 0 0; }
