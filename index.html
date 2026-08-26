@@ -6,7 +6,20 @@
     <title>First Spin</title>
   </head>
   <body>
-    <main id="app"></main>
+    <!-- Launch-night fix: the first frame a stranger sees. This shell is the
+         same markup main.js renders, painted before the bundle executes, so a
+         slow connection shows the product instead of a blank page. The button
+         arms only when the app takes over — a dead control that looks alive
+         is worse than one that says it is warming up. -->
+    <main id="app">
+      <section class="hello">
+        <p class="kicker">Today's spin</p>
+        <h1>First Spin</h1>
+        <p class="pitch">One new song a day, chosen for you.</p>
+        <button id="spin" class="spin" disabled>Warming up…</button>
+        <div id="reveal" class="reveal" hidden></div>
+      </section>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
