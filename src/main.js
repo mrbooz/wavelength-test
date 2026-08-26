@@ -24,6 +24,12 @@ const reveal = document.querySelector("#reveal");
 
 /** Draw the card for a spin that exists. Rendering only — see the note on
  *  `track` below for why restoring is not the same as completing. */
+/** Draw the card for a spin that exists — and RETIRE the button on purpose.
+ *  One spin per day is the product: after a successful reveal the button
+ *  reads "That's your spin for today" and stays disabled until refresh()
+ *  re-arms it on the next local day (visibilitychange/focus). A reviewer
+ *  read the permanent disable as a leak once, so it is now stated: this is
+ *  the designed end state of a spun day, not a forgotten re-enable. */
 function showSpin(spin) {
   reveal.replaceChildren(
     createMorningCard({
