@@ -23,6 +23,10 @@ A review that can land same-day is one that can be picked up cold:
 ## Re-requesting
 
 - After changes, re-request explicitly — a push alone is not a request.
+- A thin description doesn't pause the clock: the reviewer still answers
+  same-day, but "can't review this cold — needs what/why/verify" is a valid
+  same-day answer. Fixing the description and re-requesting opens a fresh
+  clock, like any other re-request.
 - A re-request opens a fresh same-day clock.
 - Don't ask for a stamp "because it's tiny." Tiny is a label, not a size;
   if it touches anything shared, it gets the same review as everything else.
