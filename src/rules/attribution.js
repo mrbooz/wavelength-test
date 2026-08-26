@@ -6,15 +6,7 @@
 // hours are worth (premiums, contracts, the Aldervale 21:30 clause) is
 // premium's business and deliberately absent here.
 
-/** Format a Date's LOCAL calendar day as "YYYY-MM-DD" — the same local-day
- *  rule the rest of this repo settled on in songs.js (a shift belongs to the
- *  day the person lived through, not the day in Greenwich). */
-function dayKeyOf(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
+import { dayKeyFor } from "../local-day.js";
 
 /** Midnight after the given instant, in local time. */
 function nextMidnight(date) {
@@ -43,7 +35,7 @@ export function attributeShift(shift) {
     const boundary = nextMidnight(cursor);
     const to = boundary < end ? boundary : end;
     segments.push({
-      dayKey: dayKeyOf(cursor),
+      dayKey: dayKeyFor(cursor),
       from: cursor,
       to,
       hours: (to - cursor) / 36e5,

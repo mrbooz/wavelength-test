@@ -16,12 +16,8 @@ export const SONGS = [
  *  5pm in California. On a product whose whole shape is a MORNING card,
  *  the song changed in the middle of the reader's afternoon and the card
  *  then named a day they were not in yet. Local date, local day. */
-export function dayKeyFor(date = new Date()) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
+export { dayKeyFor } from "./local-day.js";
+import { dayKeyFor } from "./local-day.js";
 
 // Deterministic pick: same calendar day -> same song for everyone in that day.
 export function songForToday(date = new Date()) {

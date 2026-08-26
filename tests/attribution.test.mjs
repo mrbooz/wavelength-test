@@ -60,3 +60,20 @@ test("a backwards or empty shift is refused, not guessed at", () => {
     end: new Date(2026, 5, 2, 19, 0),
   }));
 });
+
+// Nadia's DST note, pinned as a property: hours are REAL elapsed hours.
+// On a spring-forward night the day genuinely has 23 of them, and pay
+// follows worked time, so the segments must sum to real elapsed hours —
+// never to a wall-clock 24. This holds in any timezone the suite runs in,
+// DST transition or not, because both sides are computed the same way.
+test("hours are real elapsed hours, DST transitions included", () => {
+  // Scan a year of midnight-crossing shifts; any local DST boundary in
+  // that year is covered by construction.
+  for (let day = 0; day < 365; day += 1) {
+    const start = new Date(2026, 0, 1 + day, 20, 0);
+    const end = new Date(2026, 0, 2 + day, 8, 0);
+    const segs = attributeShift({ start, end });
+    const total = segs.reduce((h, s) => h + s.hours, 0);
+    assert.equal(total, (end - start) / 36e5, `day offset ${day}`);
+  }
+});
