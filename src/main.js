@@ -5,6 +5,7 @@ import { PRODUCT_NAME, PITCH } from "./config.js";
 import { songForToday } from "./songs.js";
 import { track } from "./analytics.js";
 import { readSpin, recordSpin } from "./spin-store.js";
+import { loadingCard, errorCard, emptyCard } from "./card-states.js";
 
 const app = document.querySelector("#app");
 
@@ -71,8 +72,11 @@ function refresh() {
     showSpin(recorded);
     return;
   }
-  reveal.hidden = true;
-  reveal.replaceChildren();
+  // TMP-9: first-run is a drawn state, not an absence. A visitor with no spin
+  // today sees the empty card — the one state allowed to sell the product —
+  // instead of a bare button over blank space.
+  reveal.replaceChildren(emptyCard());
+  reveal.hidden = false;
   spinBtn.disabled = false;
   spinBtn.textContent = "Play today's spin";
 }
@@ -83,15 +87,44 @@ document.addEventListener("visibilitychange", () => {
 });
 window.addEventListener("focus", refresh);
 
-spinBtn.addEventListener("click", () => {
-  const song = songForToday();
+/** The spin, as an async road — TMP-9 makes the wait and the failure real
+ *  states instead of assumptions. The catalogue is local today so `load`
+ *  resolves fast, which is exactly the case the 300ms skeleton delay exists
+ *  for: a fast load never shows a skeleton at all. */
+async function spin() {
+  spinBtn.disabled = true;
+  reveal.replaceChildren(loadingCard());
+  reveal.hidden = false;
+  try {
+    const song = await loadTodaysSong();
 
-  // Render the result FIRST — the event fires when the result is on screen,
-  // not on page load and not on the click itself (acceptance criteria, TMP-5).
-  // What is rendered is what was stored, so the screen and the record cannot
-  // drift apart.
-  showSpin(recordSpin(song));
+    // Render the result FIRST — the event fires when the result is on screen,
+    // not on page load and not on the click itself (TMP-5). What is rendered
+    // is what was stored, so the screen and the record cannot drift apart.
+    showSpin(recordSpin(song));
 
-  // Exactly once per occurrence: one reveal per day per visitor.
-  track("core_action_completed", { song: song.title, day: song.dayKey }, { once: `reveal:${song.dayKey}` });
-});
+    // Exactly once per occurrence: one reveal per day per visitor. Loading,
+    // error and empty fire NOTHING — the metric counts finished spins only
+    // (result-state contract, flagged to Nadia at the pivot).
+    track("core_action_completed", { song: song.title, day: song.dayKey }, { once: `reveal:${song.dayKey}` });
+  } catch {
+    reveal.replaceChildren(errorCard(() => void spin()));
+    spinBtn.disabled = false;
+  }
+}
+
+/** Local catalogue behind an async seam, so TMP-8's "what it shows is true"
+ *  and a future real backend share one call site. `?fail=1` forces the error
+ *  road — the only honest way to demo a state the local catalogue can never
+ *  reach on its own. */
+function loadTodaysSong() {
+  return new Promise((resolve, reject) => {
+    if (new URLSearchParams(location.search).has("fail")) {
+      setTimeout(() => reject(new Error("forced by ?fail=1")), 700);
+      return;
+    }
+    resolve(songForToday());
+  });
+}
+
+spinBtn.addEventListener("click", () => void spin());
